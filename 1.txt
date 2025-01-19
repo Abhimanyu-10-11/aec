@@ -1,0 +1,23 @@
+
+//Login Page
+
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.edge.*;
+import org.openqa.selenium.By;
+public class Testing {
+public static void main(String[] args) { WebDriver driver = new EdgeDriver();
+driver.get("http://lms.nmit.ac.in/moodle/login/index.php/"); String loginPageTitle = driver.getTitle(); System.out.println("Login Page Title: " + loginPageTitle); driver.findElement(By.name("username")).sendKeys("27607");
+driver.findElement(By.name("password")).sendKeys("Anusha@133"); driver.findElement(By.id("loginbtn")).submit();
+try {
+Thread.sleep(10000);
+} catch (InterruptedException e) { e.printStackTrace();
+}
+String postLoginTitle = driver.getTitle(); System.out.println("Post-Login Page Title: " + postLoginTitle); if (postLoginTitle.equals("Dashboard")) {
+System.out.println("Test Passed");
+} else {
+System.out.println("Test Failed"); System.out.println("Actual Title: " + postLoginTitle);
+}
+driver.close();
+}
+}

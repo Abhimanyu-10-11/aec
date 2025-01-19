@@ -1,0 +1,32 @@
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.By;
+
+public class LoginAutomation {
+public static void main(String[] args) {
+WebDriver driver = new ChromeDriver();
+
+driver.get("http://lms.nmit.ac.in/moodle/login/index.php/");
+
+String loginPageTitle = driver.getTitle();
+System.out.println("Login Page Title: " + loginPageTitle);
+
+driver.findElement(By.name("username")).sendKeys("27576"); driver.findElement(By.name("password")).sendKeys("ASP@7p8a0a0v1a"); driver.findElement(By.id("loginbtn")).submit();
+
+try {
+Thread.sleep(10000);
+} catch (InterruptedException e) { e.printStackTrace();
+}
+
+String postLoginTitle = driver.getTitle();
+System.out.println("Post-Login Page Title: " + postLoginTitle);
+
+
+if (postLoginTitle.equals("Dashboard")) { 
+System.out.println("Test Passed");
+} else {
+System.out.println("Test Failed"); System.out.println("Actual Title: " + postLoginTitle);
+}
+}
+}

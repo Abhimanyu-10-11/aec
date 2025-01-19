@@ -1,0 +1,75 @@
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver; import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions; import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
+
+
+public class DynamicHandling {
+
+
+public static void main(String[] args) {
+
+
+WebDriver driver = new ChromeDriver();
+
+
+try {
+// Open the application
+driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+
+
+// Perform login LoginAutomation(driver);
+
+// Perform logout logout(driver);
+} finally {
+// Quit the browser driver.quit();
+
+}
+}
+
+
+public static void LoginAutomation(WebDriver driver) { try {
+// Wait for the page to load Thread.sleep(10000);
+} catch (InterruptedException e) { e.printStackTrace();
+}
+
+
+// Enter credentials and click login driver.findElement(By.name("username")).sendKeys("Admin"); driver.findElement(By.name("password")).sendKeys("admin123"); driver.findElement(By.xpath("//button[text()=' Login ']")).click();
+
+try {
+// Wait for the dashboard to load Thread.sleep(5000);
+} catch (InterruptedException e) { e.printStackTrace();
+}
+
+
+// Verify successful login
+if (driver.getCurrentUrl().contains("https://opensource- demo.orangehrmlive.com/web/index.php/dashboard/index")) {
+System.out.println("LoginTest Passed: Login Successful\n");
+} else {
+System.out.println("Test Failed\n");
+}
+}
+
+
+public static void logout(WebDriver driver) {
+WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+// Wait for the user dropdown to appear and click it
+WebElement userDropdown = wait.until(ExpectedConditions.visibilityOfElementLocated( By.xpath("//p[contains(@class, 'oxd-userdropdown-name')]")
+));
+userDropdown.click();
+
+
+// Wait for the logout button to be clickable and click it
+WebElement logoutButton = wait.until(ExpectedConditions.elementToBeClickable( By.xpath("//a[contains(@href, '/web/index.php/auth/logout') and contains(@class, 'oxd-
+userdropdown-link')]")
+));
+logoutButton.click();
+
+
+System.out.println("Logged out successfully.");
+}
+}

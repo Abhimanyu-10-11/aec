@@ -1,0 +1,97 @@
+
+import java.util.Set;
+//import org.openqa.selenium.By; import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+
+public class ParallelExec {
+
+
+public static void main(String[] args) throws InterruptedException { WebDriver driver = new ChromeDriver();
+
+driver.get("https://www.google.com");
+
+
+System.out.println("Title of the first window: " + driver.getTitle()); String originalWindow = driver.getWindowHandle();
+
+Thread.sleep(5000);
+
+
+
+
+
+
+
+
+((ChromeDriver) driver).executeScript("window.open('https://www.bing.com','_blank');");
+
+switchToNewWindow(driver);
+System.out.println("Title of the second window" + driver.getTitle());
+
+
+Thread.sleep(5000);
+((ChromeDriver) driver).executeScript("window.open('https://www.nmit.ac.in','_blank');");
+ switchToNewWindow(driver);
+
+System.out.println("Title of the third window" + driver.getTitle());
+
+
+Thread.sleep(5000);
+
+
+driver.switchTo().window(originalWindow); System.out.println("Back to the first window" + driver.getTitle());
+
+//driver.quit();
+}
+
+
+private static void switchToNewWindow(WebDriver driver) { Set<String> windowHandles = driver.getWindowHandles(); for(String handle : windowHandles) {
+driver.switchTo().window(handle);
+}
+}
+}
+
+//---------------------------------
+
+package p18;
+
+
+
+	
+
+	import java.util.Set;
+
+	import org.openqa.selenium.WebDriver;
+	import org.openqa.selenium.chrome.ChromeDriver;
+
+	public class p18{
+	      public static void main(String args[]) {
+	    	  
+	    	  WebDriver driver = new ChromeDriver();
+		      driver.get("https://www.google.com/"); 
+		      System.out.println("Title of 1st Window: " + driver.getTitle());
+		      String originalwindow = driver.getWindowHandle();
+		      
+		      ((ChromeDriver) driver).executeScript("window.open('https://www.bing.com','_blank');");
+	          switchToNewWindow(driver);
+		      System.out.println("Title of 2nd Window: " + driver.getTitle());
+		      
+		      ((ChromeDriver) driver).executeScript("window.open('https://www.yahoo.com','_blank');");
+	          switchToNewWindow(driver);
+		      System.out.println("Title of 3rd Window: " + driver.getTitle());
+		      
+		      driver.switchTo().window(originalwindow);
+		      System.out.println("Back to 1st Window: " + driver.getTitle());
+		      
+		      driver.quit();
+	      }
+	      
+		private static void switchToNewWindow(WebDriver driver) {
+			Set<String> windowhandles = driver.getWindowHandles();
+			for(String handle : windowhandles ) {
+				driver.switchTo().window(handle);
+				
+			}
+		}
+	      
+	}

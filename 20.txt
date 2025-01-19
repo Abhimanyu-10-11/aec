@@ -1,0 +1,92 @@
+
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver; import org.openqa.selenium.edge.EdgeDriver; import org.openqa.selenium.firefox.FirefoxDriver;
+
+public class CrossBrowserTest {
+public static void main(String[] args) {
+
+
+WebDriver driver = new ChromeDriver();
+
+
+try {
+// Open the application
+driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+
+
+// Perform login
+LoginAutomation(driver);
+
+
+runCrossBrowserTests();
+
+
+} finally {
+// Quit the browser driver.quit();
+}
+}
+
+public static void LoginAutomation(WebDriver driver) {
+
+
+try {
+Thread.sleep(10000);
+}catch (InterruptedException e) { e.printStackTrace();
+}
+driver.findElement(By.name("username")).sendKeys("Admin"); driver.findElement(By.name("password")).sendKeys("admin123"); driver.findElement(By.xpath("//button[text()=' Login ']")).click();
+
+try {
+Thread.sleep(5000);
+}catch (InterruptedException e) { e.printStackTrace();
+}
+
+
+if(driver.getCurrentUrl().contains("https://opensource- demo.orangehrmlive.com/web/index.php/dashboard/index")) {
+System.out.println("LoginTest Passed: Login Successfull\n");
+} else {
+System.out.println("Test Failed\n");
+}
+}
+
+
+public static void runCrossBrowserTests() { String[] browsers = {"chrome", "firefox", "edge"};
+
+for (String browser : browsers) { WebDriver driver = null;
+
+try {
+switch (browser.toLowerCase()) {
+case "chrome":
+
+driver = new ChromeDriver();
+break;
+case "firefox":
+driver = new FirefoxDriver();
+break; case "edge":
+driver = new EdgeDriver();
+break; default:
+System.out.println("Unsupported browser: " + browser);
+continue;
+}
+
+
+driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+
+
+LoginAutomation(driver);
+
+
+System.out.println("Test completed successfully on " + browser + "\n");
+
+
+} catch (Exception e) {
+System.err.println("Error during testing on " + browser + ": " + e.getMessage());
+} finally {
+driver.quit();
+}
+}
+}
+
+
+}

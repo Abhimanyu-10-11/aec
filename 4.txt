@@ -1,0 +1,40 @@
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+//import org.openqa.selenium.support.ui.Select;
+//import org.openqa.selenium.support.ui.WebDriverWait;
+//import java.time.Duration;
+
+
+public class FormFilling {
+
+
+public static void main(String[] args) throws InterruptedException { WebDriver driver = new ChromeDriver();
+// WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+
+// Navigate to the form driver.get("https://www.letskodeit.com/practice");
+
+//RadioButtons
+WebElement benzRB = driver.findElement(By.id("benzradio")); benzRB.click();
+Thread.sleep(5000);
+WebElement bmwRB = driver.findElement(By.id("bmwradio")); bmwRB.click();
+Thread.sleep(5000);
+WebElement hondaRB = driver.findElement(By.id("hondaradio")); hondaRB.click();
+
+Thread.sleep(5000);
+//CheckBoxes
+WebElement benzCB = driver.findElement(By.id("benzcheck")); benzCB.click();
+
+WebElement bmwCB = driver.findElement(By.id("bmwcheck")); bmwCB.click();
+
+WebElement hondaCB = driver.findElement(By.id("hondacheck")); hondaCB.click();
+Thread.sleep(5000);
+//Input
+WebElement textIP = driver.findElement(By.id("autosuggest")); textIP.sendKeys("Aashritha Poojary");
+}
+
+
+}
