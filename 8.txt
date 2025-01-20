@@ -95,3 +95,77 @@ package p18;
 		}
 	      
 	}
+
+-------------------------------------
+package p1;
+
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class p18 {
+
+    public static void main(String[] args) {
+        // Initialize the WebDriver (Single instance for both threads)
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://google.com"); // Open the first tab (Google by default)
+        System.out.println("Main Tab Opened: " + driver.getTitle());
+
+        // Open a new tab for Wikipedia
+        ((JavascriptExecutor) driver).executeScript("window.open('https://en.wikipedia.org/wiki/We', '_blank');");
+
+        // Store all tab handles in a list
+        List<String> tabs = new ArrayList<>(driver.getWindowHandles());
+
+        // Create and start threads for Google and Wikipedia searches
+        Thread googleSearchThread = new Thread(new SearchTask(driver, tabs.get(0), "Google Search"));
+        Thread wikipediaSearchThread = new Thread(new SearchTask(driver, tabs.get(1), "Wikipedia Search"));
+
+        googleSearchThread.start();
+        wikipediaSearchThread.start();
+
+        // Wait for threads to finish
+        try {
+            googleSearchThread.join();
+            wikipediaSearchThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Both searches completed!");
+        driver.quit(); // Close all tabs and the browser
+    }
+}
+
+// Runnable class to handle search tasks in parallel
+class SearchTask implements Runnable {
+    private WebDriver driver;
+    private String tabHandle;
+    private String taskName;
+
+    public SearchTask(WebDriver driver, String tabHandle, String taskName) {
+        this.driver = driver;
+        this.tabHandle = tabHandle;
+        this.taskName = taskName;
+    }
+
+    @Override
+    public void run() {
+        synchronized (driver) {
+            try {
+                // Switch to the appropriate tab
+                driver.switchTo().window(tabHandle);
+
+                // Perform a search or other action on the current tab
+                System.out.println(taskName + " - Title: " + driver.getTitle());
+
+                // Simulate additional task (e.g., typing in search bar)
+                Thread.sleep(3000); // Simulated task delay
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }}

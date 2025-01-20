@@ -1,0 +1,90 @@
+package p1;
+import java.util.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
+
+public class labproj {
+    public static void main(String[] args) {
+        // Set up WebDriver
+        WebDriver driver = new ChromeDriver();
+        Scanner sc=new Scanner(System.in);
+        System.out.println("enter location : ");
+        String dest=sc.nextLine();
+        String destination = dest;
+
+        // Set up explicit wait
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+
+        try {
+            // Open Google Maps
+            String mapsUrl = "https://www.google.com/maps";
+            driver.get(mapsUrl);
+
+            // Maximize browser window
+            driver.manage().window().maximize();
+
+            // Define destination
+            
+
+            // Locate and interact with the search box
+            WebElement searchBox = wait.until(ExpectedConditions.elementToBeClickable(
+                    By.id("searchboxinput")
+            ));
+            searchBox.sendKeys(destination);
+
+            // Locate and click the search button
+            WebElement searchButton = wait.until(ExpectedConditions.elementToBeClickable(
+                    By.id("searchbox-searchbutton")
+            ));
+            searchButton.click();
+            System.out.println("yoooooooo sucessss");
+            // Wait for the destination to appear
+            wait.until(ExpectedConditions.presenceOfElementLocated(
+                    By.xpath("//h1[contains(text(), '" + destination + "')]")
+            ));
+            System.out.println("Destination found on the map!");
+
+            // Locate and click the "Directions" button
+            WebElement directionsButton = wait.until(ExpectedConditions.elementToBeClickable(
+                    By.xpath("//button[contains(@aria-label, 'Directions')]")
+            ));
+            directionsButton.click();
+
+            // Wait for the starting point input field
+            WebElement startingPointInput = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath("//input[contains(@aria-label, 'starting point')]")
+            ));
+            startingPointInput.clear();
+            startingPointInput.sendKeys("My location");
+
+            // Simulate pressing 'Enter' to confirm the starting point
+            startingPointInput.sendKeys(org.openqa.selenium.Keys.RETURN);
+
+            // Wait for directions to load
+            wait.until(ExpectedConditions.presenceOfElementLocated(
+                    By.xpath("//h1[contains(text(), 'Directions')]")
+            ));
+            System.out.println("Directions from current location displayed!");
+
+            // Optional: Interact with the map (Zoom in)
+            WebElement zoomInButton = wait.until(ExpectedConditions.elementToBeClickable(
+                    By.xpath("//button[@aria-label='Zoom in']")
+            ));
+            zoomInButton.click();
+            System.out.println("Zoomed in on the map!");
+
+        } catch (Exception e) {
+            System.err.println("An error occurred:");
+            e.printStackTrace();
+        } finally {
+            // Close the browser
+            driver.quit();
+        }
+    }
+}
